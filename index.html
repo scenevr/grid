@@ -1,0 +1,20 @@
+<script src="https://assets-scenevr-com.s3.amazonaws.com/prerelease/dist/aframe.min.js"></script>
+
+<a-scene>
+  <!-- SceneVR lighting -->
+  <a-entity light="type: ambient; color: #777"></a-entity>
+  <a-entity light="type: spot; angle: 45; color: #ffffff; intensity: 0.9" position="100 100 100"></a-entity>
+  <a-sky color="#cef"></a-sky>
+  <a-entity rotation="-90 0 0" geometry="primitive: plane; width: 1024; height: 1024;" material="repeat: 1024 1024; src: url(https://assets-scenevr-com.s3-us-west-1.amazonaws.com/prerelease/images/grid.png)"></a-entity>
+
+  <a-entity id="grid">
+    <!--a-entity position="0 1 0" material="color:red" geometry="primitive:box"></a-entity-->
+  </a-entity>
+
+  <a-entity position="0 0 0">
+    <!--a-cube position="0 1 0" color="red"></a-cube-->
+  </a-entity>
+
+</a-scene>
+
+<script src="client.js"></script>
