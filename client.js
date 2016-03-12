@@ -61,9 +61,20 @@ class Grid {
     this.getRoot().appendChild(entity);
   }
 
+  getCamera () {
+    return document.querySelector('a-camera');
+  }
+
+  getPlayerCoord () {
+    var v = new THREE.Vector3();
+    v.copy(this.getCamera().getAttribute('position'));
+    v.multiplyScalar(1 / GRID_SIZE).floor();
+    return new THREE.Vector2(v.x, v.z);
+  }
+
   getAdjacent () {
-    var coord = new THREE.Vector2(0, 0);
-    
+    var coord = this.getPlayerCoord();
+
     var results = [coord];
 
     results.push(coord.clone().add(new THREE.Vector2(-1, -1)));
