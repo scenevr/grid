@@ -1,6 +1,8 @@
 /* globals DOMParser, THREE, fetch */
 
-const GRID_SIZE = 16;
+'use strict';
+
+const GRID_SIZE = 32;
 
 class Grid {
   constructor () {
@@ -11,6 +13,8 @@ class Grid {
   }
 
   loadScenes () {
+    this.prune();
+
     this.getAdjacent().forEach((coord) => {
       if (this.isCoordLoaded(coord)) {
         return;
@@ -19,9 +23,7 @@ class Grid {
       var url = `/scenes/${coord.x}/${coord.y}`;
       //  the above would normally redirect you to the scene.
 
-      url = '/scenes/box.html';
-
-      console.log(url);
+      url = '/scenes/box.html?';
 
       fetch(url).then((response) => {
         return response.text();
@@ -68,8 +70,20 @@ class Grid {
   getPlayerCoord () {
     var v = new THREE.Vector3();
     v.copy(this.getCamera().getAttribute('position'));
-    v.multiplyScalar(1 / GRID_SIZE).floor();
+    v.multiplyScalar(1 / GRID_SIZE).round();
     return new THREE.Vector2(v.x, v.z);
+  }
+
+  prune () {
+    var adjacent = this.getAdjacent().map(this.coordValue);
+
+    var redundant = Array.prototype.filter.call(this.getRoot().querySelectorAll('a-entity[grid]'), (child) => {
+      return adjacent.indexOf(child.getAttribute('grid')) === -1;
+    });
+
+    redundant.forEach((node) => {
+      this.getRoot().removeChild(node);
+    });
   }
 
   getAdjacent () {
